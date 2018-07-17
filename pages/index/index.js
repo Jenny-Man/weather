@@ -46,19 +46,19 @@ Page({
     this.getWeather();
   },
   onShow(){
-   wx.getSetting({
-     success:res => {
-      let auth= res.authSetting['scope.userLocation']
-      if (auth && this.data.locationAuthType !=AUTHORIZED){
-        //权限从无到有
-        this.setData({
-          locationAuthType: AUTHORIZED,
-          locationTips: AUTHORIZED_TIPS
-        });
-        this.getLocation();
-      }
-     }
-   })
+  //  wx.getSetting({
+  //    success:res => {
+  //     let auth= res.authSetting['scope.userLocation']
+  //     if (auth && this.data.locationAuthType !=AUTHORIZED){
+  //       //权限从无到有
+  //       this.setData({
+  //         locationAuthType: AUTHORIZED,
+  //         locationTips: AUTHORIZED_TIPS
+  //       });
+  //       this.getLocation();
+  //     }
+  //    }
+  //  })
   },
   getWeather(callBack){
     wx.request({
@@ -131,7 +131,14 @@ Page({
    */
   onTapLocation(){
     if (this.data.locationAuthType === UNAUTHORIZED){
-      wx.openSetting({  })
+      wx.openSetting({
+        success: res =>{
+          let auth=res.authSetting['scope.userLocation']
+          if(auth){
+            this.getLocation();
+          }
+        }
+        })
     }else{
       this.getLocation();
     }    
