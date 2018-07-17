@@ -43,7 +43,20 @@ Page({
     });
   },
   onLoad(){
-    this.getWeather();
+    wx.getSetting({
+      success:res => {
+       let auth= res.authSetting['scope.userLocation'];
+       this.setData({
+         locationAuthType:auth?AUTHORIZED:(auth === false)?UNAUTHORIZED:UNPROMPTED,
+         locationTips:auth?AUTHORIZED_TIPS:(auth === false)?UNAUTHORIZED_TIPS:UNPROMPTED_TIPS
+       });
+       if(auth){
+         this.getLocation();
+       }else{
+         this.getWeather();
+       }
+      }
+    })
   },
   onShow(){
   //  wx.getSetting({
