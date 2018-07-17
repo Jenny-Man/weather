@@ -19,9 +19,6 @@ const amapFile = require('../../libs/amap-wx.js');
 const UNPROMPTED = 0
 const UNAUTHORIZED = 1
 const AUTHORIZED = 2
-const UNPROMPTED_TIPS = "点击获取当前位置"
-const UNAUTHORIZED_TIPS = "点击开启位置权限"
-const AUTHORIZED_TIPS = ""
 Page({
   data:{
     nowTemp:'',
@@ -32,7 +29,6 @@ Page({
     todayTemp:'',
     city:'上海市',
     locationAuthType:UNPROMPTED,
-    locationTips:UNPROMPTED_TIPS,
   },
   /**
    * 下拉刷新页面
@@ -48,7 +44,6 @@ Page({
        let auth= res.authSetting['scope.userLocation'];
        this.setData({
          locationAuthType:auth?AUTHORIZED:(auth === false)?UNAUTHORIZED:UNPROMPTED,
-         locationTips:auth?AUTHORIZED_TIPS:(auth === false)?UNAUTHORIZED_TIPS:UNPROMPTED_TIPS
        });
        if(auth){
          this.getLocation();
@@ -66,7 +61,6 @@ Page({
   //       //权限从无到有
   //       this.setData({
   //         locationAuthType: AUTHORIZED,
-  //         locationTips: AUTHORIZED_TIPS
   //       });
   //       this.getLocation();
   //     }
@@ -165,7 +159,6 @@ Page({
       success: data => {
         this.setData({
           locationAuthType: AUTHORIZED,
-          locationTips: AUTHORIZED_TIPS
         });
         //成功回调
         let city = data.city.data;
@@ -179,7 +172,6 @@ Page({
         //失败回调
         this.setData({
           locationAuthType: UNAUTHORIZED,
-          locationTips: UNAUTHORIZED_TIPS
         });
       }
     });
